@@ -5,7 +5,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name = "test-main"
+    Name = "jenkins-main"
   }
 }
 
@@ -16,7 +16,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "test-public-subnet"
+    Name = "jenkins-public-subnet"
   }
 }
 
@@ -26,7 +26,7 @@ resource "aws_subnet" "private" {
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "test-private-subnet"
+    Name = "jenkins-private-subnet"
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "my-igw"
+    Name = "jenkins-igw"
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "my-public-rt"
+    Name = "jenkins-public-rt"
   }
 }
 
@@ -64,7 +64,7 @@ resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "my-private-rt"
+    Name = "jenkins-private-rt"
   }
 }
 
@@ -91,7 +91,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public.id
 
   tags = {
-    Name = "my-nat-gateway"
+    Name = "jenkins-nat-gateway"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -107,7 +107,7 @@ resource "aws_instance" "public" {
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
-    Name = "public-instance"
+    Name = "jenkins-public-instance"
   }
 }
 
@@ -118,13 +118,13 @@ resource "aws_instance" "private" {
   key_name               = "jjtech24"
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   tags = {
-    Name = "private-instance"
+    Name = "jenkins-private-instance"
   }
 }
 
 
 resource "aws_security_group" "web_sg" {
-  name        = "test-web-sg"
+  name        = "jenkins-web-sg"
   description = "Security group for web servers"
   vpc_id      = aws_vpc.main.id
 }
@@ -166,7 +166,7 @@ resource "aws_security_group_rule" "inbound_https" {
 }
 
 resource "aws_security_group" "private_sg" {
-  name        = "test-private-sg"
+  name        = "jenkins-private-sg"
   description = "Security group for private instances"
   vpc_id      = aws_vpc.main.id
 }
